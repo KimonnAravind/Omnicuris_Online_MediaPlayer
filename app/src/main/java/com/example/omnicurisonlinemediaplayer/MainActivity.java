@@ -147,4 +147,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        videoplayer.stopPlayback();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoplayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoplayer.pause();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+finish();
+        return super.onSupportNavigateUp();
+    }
 }
