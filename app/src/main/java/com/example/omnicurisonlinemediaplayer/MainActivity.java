@@ -38,33 +38,34 @@ public class MainActivity extends AppCompatActivity {
     VideoView videoplayer;
     RelativeLayout relativeLayout;
     FrameLayout frameLayout;
-    String Link=null, currentVID=null;
-    String string1,string2;
+    String Link = null, currentVID = null;
+    String string1, string2;
     private RecyclerView recyclerView;
     DatabaseReference DisplayReference;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<DisplayContent, Design> adapter;
     EditText editText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        relativeLayout = (RelativeLayout)findViewById(R.id.relative);
+        relativeLayout = (RelativeLayout) findViewById(R.id.relative);
         Link = getIntent().getStringExtra("Link");
-        currentVID=getIntent().getStringExtra("id");
+        currentVID = getIntent().getStringExtra("id");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        frameLayout=(FrameLayout)findViewById(R.id.video_frame);
+        frameLayout = (FrameLayout) findViewById(R.id.video_frame);
         MediaController mediaController = new MediaController(this);
-        videoplayer=(VideoView)findViewById(R.id.video_view);
+        videoplayer = (VideoView) findViewById(R.id.video_view);
         videoplayer.setMediaController(mediaController);
         mediaController.setPrevNextListeners(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtra("Link", string1);
-                intent.putExtra("id",string2);
+                intent.putExtra("id", string2);
                 finish();
                 startActivity(intent);
 
@@ -78,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
         });
         videoplayer.setMediaController(mediaController);
 
-        Uri uri = Uri.parse(""+Link);
+        Uri uri = Uri.parse("" + Link);
         videoplayer.setVideoURI(uri);
         videoplayer.start();
-        recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(false);
         DisplayReference = FirebaseDatabase.getInstance().getReference().child("DisplayContent");
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
@@ -93,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            frameLayout.getLayoutParams().width=ViewGroup.LayoutParams.MATCH_PARENT;
-            frameLayout.getLayoutParams().height= ViewGroup.LayoutParams.MATCH_PARENT;
+            frameLayout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            frameLayout.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             relativeLayout.setVisibility(View.INVISIBLE);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            ViewGroup.LayoutParams params =frameLayout.getLayoutParams();
-            params.height=700;
-        relativeLayout.setVisibility(View.VISIBLE);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
+            params.height = 700;
+            relativeLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -109,23 +110,23 @@ public class MainActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<DisplayContent> options = new FirebaseRecyclerOptions.Builder<DisplayContent>()
                 .setQuery(DisplayReference, DisplayContent.class)
                 .build();
-        adapter=new FirebaseRecyclerAdapter<DisplayContent, Design>(options) {
+        adapter = new FirebaseRecyclerAdapter<DisplayContent, Design>(options) {
             @Override
             protected void onBindViewHolder(@NonNull Design holder, int position, @NonNull final DisplayContent model) {
-                holder.imageView.setText("Text"+model.getVtitle());
+                holder.imageView.setText("Text" + model.getVtitle());
                 Picasso.get().load(model.getThum()).into(holder.imageView1);
 
-                string1=model.getVlink();
-                string2=model.getId();
+                string1 = model.getVlink();
+                string2 = model.getId();
 
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                   //     Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                        //     Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         intent.putExtra("Link", model.getVlink());
-                        intent.putExtra("id",model.getId());
+                        intent.putExtra("id", model.getId());
                         finish();
                         startActivity(intent);
 
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.designs, parent, false);
                 Design holder = new Design(view);
 
-                return holder;}
+                return holder;
+            }
         };
         recyclerView.setAdapter(adapter);
         adapter.startListening();
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-finish();
+        finish();
         return super.onSupportNavigateUp();
     }
 }
