@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Previous", Toast.LENGTH_SHORT).show();
+
             }
         });
         videoplayer.setMediaController(mediaController);
